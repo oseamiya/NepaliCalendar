@@ -70,13 +70,13 @@ public class NepaliCalendar extends AndroidNonvisibleComponent{
        
     }
     @SimpleEvent(description = "This event is triggered when AD is converted to BD")
-    public void AdtoBSConverted(int day , int month , int year , int dayOfWeek){
-        EventDispatcher.dispatchEvent(this , "AdtoBSConverted" , new Object[] {day , month , year ,dayOfWeek});
+    public void ADtoBSConverted(int day , int month , int year , int dayOfWeek){
+        EventDispatcher.dispatchEvent(this , "ADtoBSConverted" , new Object[] {day , month , year ,dayOfWeek});
 
     }
     @SimpleEvent(description = "This event is triggered when BS is converted to AD")
-    public void BsToAdConverted(int day, int month , int year , int dayOfWeek){
-        EventDispatcher.dispatchEvent(this , "BsToAdConverted" , new Object[] {day , month , year ,dayOfWeek});
+    public void BSToADConverted(int day, int month , int year , int dayOfWeek){
+        EventDispatcher.dispatchEvent(this , "BSToADConverted" , new Object[] {day , month , year ,dayOfWeek});
 
     }
 
@@ -98,7 +98,7 @@ public class NepaliCalendar extends AndroidNonvisibleComponent{
         c1.add(Calendar.DATE , numberOfDaysPassed);
 
         String result = String.valueOf(c1.getTime());
-        BsToAdConverted((c1.get(Calendar.DAY_OF_MONTH)) , c1.get(Calendar.MONTH) , (c1.get(Calendar.YEAR)) , (c1.get(Calendar.DAY_OF_WEEK)));
+        BSToADConverted((c1.get(Calendar.DAY_OF_MONTH)) , c1.get(Calendar.MONTH) + 1 , (c1.get(Calendar.YEAR)) , (c1.get(Calendar.DAY_OF_WEEK)));
     
                
 
@@ -174,7 +174,7 @@ public class NepaliCalendar extends AndroidNonvisibleComponent{
         LocalDate forweek = LocalDate.of(year, month, dayOfMonth);
         DayOfWeek dw = forweek.getDayOfWeek();
 
-        AdtoBSConverted(nepDay  , nepMonth , equivalentNepaliYear , dw.getValue());
+        ADtoBSConverted(nepDay  , nepMonth , equivalentNepaliYear , dw.getValue());
         
         
         
@@ -225,37 +225,34 @@ public class NepaliCalendar extends AndroidNonvisibleComponent{
     }
 
     @SimpleFunction(description = "Format the json to get tithi, if the day is holiday,etc ")
-    public void FormatJson(String json , String month , String day){
+    public void FormatJson(String json , int month , int day){
         String actMonth = "";
-        if(month == "1"){
+        if(month == 1){
             actMonth = "Baishakh";
-        }else if(month == "2"){
+        }else if(month == 2){
             actMonth = "Jestha";
-        }else if(month == "3"){
+        }else if(month == 3){
             actMonth = "Ashadh";
-        }else if(month == "4"){
+        }else if(month == 4){
             actMonth = "Shrawan";
-        }else if(month == "5"){
+        }else if(month == 5){
             actMonth = "Bhadra";
-        }else if(month == "6"){
+        }else if(month == 6){
             actMonth = "Ashwin";
-        }else if(month == "7"){
+        }else if(month == 7){
             actMonth = "Kartik";
-        }else if(month == "8"){
+        }else if(month == 8){
             actMonth = "Mangsir";
-        }else if(month == "9"){
+        }else if(month == 9){
             actMonth = "Poush";
-        }else if(month == "10"){
+        }else if(month == 10){
             actMonth = "Magh";
-        }else if(month == "11"){
+        }else if(month == 11){
             actMonth = "Falgun";
-        }else if(month == "12"){
+        }else if(month == 12){
             actMonth = "Chaitra";
         }else{
-            String firstLetter = month.substring(0, 1);
-            String remainingLetter = month.substring(1);
-            // to have first letterr capital
-            actMonth = firstLetter.toUpperCase() + remainingLetter;
+            actMonth = "Chaitra";
 
         }
         JSONObject jsonObject = new JSONObject(json);
@@ -287,7 +284,7 @@ public class NepaliCalendar extends AndroidNonvisibleComponent{
             isSpecialDayList.add(isSpecialDays);
         }
 
-        int dayIndex = nepDayList.indexOf(day);
+        int dayIndex = nepDayList.indexOf(String.valueOf(day));
         JsonFormatted(json, tithiList.get(dayIndex).toString(), eventList.get(dayIndex).toString(), isHolidayList.get(dayIndex).toString(), isSpecialDayList.get(dayIndex).toString());
     }
 
@@ -301,6 +298,38 @@ public class NepaliCalendar extends AndroidNonvisibleComponent{
         v.addView(web , new FrameLayout.LayoutParams(-1 , -1));
     }
     
+    @SimpleFunction(description = "To convert english number to nepali number")
+    public String EngNumToNepNum(int number){
+        StringBuilder sb = new StringBuilder();
+        String numInString = String.valueOf(number);
+
+        for(int i=0 ; i<numInString.length() ; i++){
+            String eachChar = Character.toString(numInString.charAt(i));
+            String eachCharInNep = "";
+            if(eachChar == "1"){
+                eachCharInNep = "१";
+            }else if(eachChar == "2"){
+                eachCharInNep = "२";
+            }else if(eachChar == "3"){
+                eachCharInNep = "४";
+            }else if(eachChar == "5"){
+                eachCharInNep = "५";
+            }else if(eachChar == "6"){
+                eachCharInNep = "६";
+            }else if(eachChar == "7"){
+                eachCharInNep = "७";
+            }else if(eachChar == "8"){
+                eachCharInNep = "८";
+            }else if(eachChar == "9"){
+                eachCharInNep = "९";
+            }else if(eachChar == "0"){
+                eachCharInNep = "०";
+            }
+            
+            sb.append(eachCharInNep);
+        }
+        return sb.toString();
+    }
 
       
 
