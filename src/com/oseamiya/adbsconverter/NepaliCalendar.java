@@ -1,4 +1,4 @@
-package com.oseamiya.adbsconverter;
+package com.oseamiya.nepalicalendar;
 
 import com.google.appinventor.components.runtime.*;
 import com.google.appinventor.components.annotations.*;
@@ -7,6 +7,14 @@ import com.google.appinventor.components.common.ComponentCategory;
 
 import android.content.Context;
 import android.app.Activity;
+import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.webkit.WebChromeClient;
+import android.webkit.*;
+import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
+
 
 
 
@@ -30,7 +38,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.oseamiya.adbsconverter.Lookup;
+import com.oseamiya.nepalicalendar.Lookup;
 import org.json.*;
 
 @DesignerComponent(
@@ -38,13 +46,14 @@ import org.json.*;
     description = "",
     version = 1,
     category = ComponentCategory.EXTENSION,
-    nonVisible = true
+    nonVisible = true,
+    helpUrl = "https://github.com/oseamiya/NepaliCalendar"
 )
 @UsesLibraries(libraries = "orgjson.jar")
 
 @SimpleObject(external = true)
 
-public class AdBsConverter extends AndroidNonvisibleComponent{
+public class NepaliCalendar extends AndroidNonvisibleComponent{
     private ComponentContainer container;
     private Context context;
     private Activity activity;
@@ -53,7 +62,7 @@ public class AdBsConverter extends AndroidNonvisibleComponent{
 
     
 
-    public AdBsConverter(ComponentContainer container){
+    public NepaliCalendar(ComponentContainer container){
         super(container.$form());
         this.context = container.$context();
         this.activity = (Activity) container.$context();
@@ -280,12 +289,19 @@ public class AdBsConverter extends AndroidNonvisibleComponent{
 
         int dayIndex = nepDayList.indexOf(day);
         JsonFormatted(json, tithiList.get(dayIndex).toString(), eventList.get(dayIndex).toString(), isHolidayList.get(dayIndex).toString(), isSpecialDayList.get(dayIndex).toString());
-
-        
-    
-       
-        
     }
+
+    @SimpleFunction(description = "To create a calendar inerface in View")
+    public void CreateCalendar(HVArrangement view){
+        FrameLayout v =(FrameLayout) view.getView();
+        WebView web = new WebView(this.context);
+        web.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+        web.getSettings().setJavaScriptEnabled(true);
+        web.loadUrl("https://nepalicalendar.rat32.com/embed.php");
+        v.addView(web , new FrameLayout.LayoutParams(-1 , -1));
+    }
+    
+
       
 
 }
