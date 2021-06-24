@@ -216,7 +216,7 @@ public class AdBsConverter extends AndroidNonvisibleComponent{
     }
 
     @SimpleFunction(description = "Format the json to get tithi, if the day is holiday,etc ")
-    public  YailList FormatJson(String json , String month , int day){
+    public void FormatJson(String json , String month , String day){
         String actMonth = "";
         if(month == "1"){
             actMonth = "Baishakh";
